@@ -1,4 +1,6 @@
-# Noisy Logic Bayesian models for active TF inference
+# NLBayes (R package)
+
+Noisy Logic Bayesian models for active TF inference
 
 ## Install on Linux
 
