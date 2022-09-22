@@ -42,6 +42,7 @@ namespace nlb
             gsl_rng * rng;
 
         public:
+            unsigned int seed;
             node_vector_t random_nodes;
             node_vector_t norand_nodes; /* Used to keep track of node pointers for later destruction */
 

@@ -38,6 +38,8 @@ namespace nlb
             ModelBase(unsigned int = 3);
             virtual ~ModelBase();
 
+            std::vector<unsigned int> get_seeds();
+
             gelman_rubin_vector_t get_gelman_rubin();
             double get_max_gelman_rubin();
 

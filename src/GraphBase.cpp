@@ -12,6 +12,7 @@ namespace nlb
 
     GraphBase::GraphBase(unsigned int seed)
     {
+        this->seed = seed;
         this->rng = gsl_rng_alloc(gsl_rng_mt19937);
         gsl_rng_set(this->rng, seed);
     }

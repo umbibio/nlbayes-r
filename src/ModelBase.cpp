@@ -10,6 +10,17 @@ namespace nlb
     ModelBase::~ModelBase() {
     }
 
+    std::vector<unsigned int> ModelBase::get_seeds()
+    {
+
+        std::vector<unsigned int> seeds;
+
+        for (unsigned int i = 0; i < this->n_graphs; i++)
+            seeds.push_back(this->graphs[i]->seed);
+        
+        return seeds;
+    }
+
     gelman_rubin_vector_t ModelBase::get_gelman_rubin() 
     {
         gelman_rubin_vector_t gelman_rubin_vector;
