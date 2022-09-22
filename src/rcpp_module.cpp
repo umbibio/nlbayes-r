@@ -142,7 +142,7 @@ void ModelORNOR::build_model() {
     const double SPRIOR [3 * 3] = {1.0 - s_leniency, 0.9 * s_leniency, 0.1 * s_leniency,
                                    0.5 * s_leniency, 1.0 - s_leniency, 0.5 * s_leniency,
                                    0.1 * s_leniency, 0.9 * s_leniency, 1.0 - s_leniency};
-    
+
     double zy_value = this->zy == 0. ? 1. : this->zy;
     double zn_value;
     if(this->evidence.size() > 0 && this->zn == 0.) {
