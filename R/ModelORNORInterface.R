@@ -49,7 +49,7 @@ preprocess.data <- function(
 
 ORNOR.inference <- function(
     network, evidence = c(), tf.active.set = c(), N = 2000, s.leniency = 0.1,
-    n.graphs = 3, gr.level = 1.10, uniform.t = TRUE, do.sample = TRUE,
+    n.graphs = 3, gr.level = 1.10, uniform.t = TRUE, do.sample = FALSE,
     zy = 0., zn = 0., verbosity = 0, burnin = FALSE) {
 
     if (uniform.t) {
