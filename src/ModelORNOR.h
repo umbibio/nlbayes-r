@@ -21,6 +21,8 @@ namespace nlb
         private:
         protected:
         public:
+            double t_alpha, t_beta;
+            double zy, zn;
             ModelORNOR();
             ~ModelORNOR() override;
             ModelORNOR(const network_t, const evidence_dict_t, const prior_active_tf_set_t = prior_active_tf_set_t(),

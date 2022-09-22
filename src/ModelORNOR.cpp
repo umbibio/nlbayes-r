@@ -15,6 +15,14 @@ namespace nlb
         unsigned int n_graphs
     ) : ModelBase(n_graphs) {
 
+        this->network = network;
+        this->evidence = evidence;
+        this->active_tf_set = active_tf_set;
+        this->t_alpha = t_alpha;
+        this->t_beta = t_beta;
+        this->zy = z_value;
+        this->zn = z0_value;
+
         std::random_device rd;
         GraphORNOR * graph;
 
