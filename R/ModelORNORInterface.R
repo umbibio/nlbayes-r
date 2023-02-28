@@ -23,6 +23,18 @@ compute.enrichment <- function(network, evidence) {
 preprocess.data <- function(
     network, evidence, tf.active.set = c(), verbosity=0) {
 
+    for (src in names(network)) {
+        src_regulon <- network[[src]]
+        gene_names <- names(src_regulon)
+        src_regulon <- as.integer(src_regulon)
+        names(src_regulon) <- gene_names
+        network[[src]] <- src_regulon
+    }
+
+    gene_names <- names(evidence)
+    evidence <- as.integer(evidence)
+    names(evidence) <- gene_names
+
     all.tfs <- names(network)
     all.genes <- unique(unlist(lapply(network, names)))
 
