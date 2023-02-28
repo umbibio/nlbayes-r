@@ -143,7 +143,7 @@ void ModelORNOR::build_model() {
                                    0.5 * s_leniency, 1.0 - s_leniency, 0.5 * s_leniency,
                                    0.1 * s_leniency, 0.9 * s_leniency, 1.0 - s_leniency};
 
-    double zy_value = this->zy == 0. ? 1. : this->zy;
+    double zy_value = this->zy == 0. ? 0.99 : this->zy;
     double zn_value;
     if(this->evidence.size() > 0 && this->zn == 0.) {
         unsigned int n_edges = this->interaction_network.size();
