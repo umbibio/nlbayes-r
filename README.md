@@ -2,6 +2,9 @@
 
 Noisy Logic Bayesian models for active TF inference
 
+To learn how to use this tool, check out the [example script](examples/nlbayes_example.R).
+
+
 ## Install on Linux
 
 1. Install system dependencies
@@ -16,7 +19,7 @@ sudo apt install -y libgsl-dev
 ```
 2. Install R dependencies
 ```bash
-R -q -e "install.packages(c('Rcpp', 'RcppProgress', 'devtools'))"
+R -q -e "install.packages(c('rjson', 'Rcpp', 'RcppProgress', 'devtools'))"
 ```
 3. Install the NLBayes package
 ```bash
