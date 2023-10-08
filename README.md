@@ -23,5 +23,5 @@ R -q -e "install.packages(c('rjson', 'Rcpp', 'RcppProgress', 'devtools'))"
 ```
 3. Install the NLBayes package
 ```bash
-R -q -e "devtools::install_github('umbibio/nlbayes-rcran')"
+R -q -e "devtools::install_github('umbibio/nlbayes-r')"
 ```
