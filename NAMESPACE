@@ -1,3 +1,11 @@
 useDynLib(nlbayes, .registration=TRUE)
 import(methods, Rcpp, RcppProgress)
 exportPattern("^[[:alpha:]]+")
+
+# New API
+export(ornor)
+export(fit)
+export(get_results)
+S3method(fit, ornor)
+S3method(get_results, ornor)
+S3method(print, ornor)

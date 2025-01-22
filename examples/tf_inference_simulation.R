@@ -59,7 +59,7 @@ gen_network <- function(nx = 125, ny = 2500, avg_ntf = 5) {
 #' Generate evidence based on network and active TFs
 #'
 #' @param network Network structure
-#' @param active_tfs Vector of active TF indices
+#' @param active_tfs Vector of active TF names
 #' @param tf_target_fraction Fraction of TF targets that become differentially expressed
 #' @return Vector of differentially expressed genes
 gen_evidence <- function(network, active_tfs, tf_target_fraction = 0.2) {
@@ -98,10 +98,13 @@ gen_evidence <- function(network, active_tfs, tf_target_fraction = 0.2) {
 #' Plot ROC or PR curve using ASCII art
 #'
 #' @param metric_type Type of curve to plot ('roc' or 'pr')
-#' @param true_labels True labels
-#' @param scores Predicted scores
+#' @param results Data frame with inference results
 #' @param plot_title Title for the plot
-plot_metric <- function(metric_type, true_labels, scores, plot_title) {
+plot_metric <- function(metric_type, results, plot_title) {
+  # Convert logical to numeric for ROC calculation
+  true_labels <- as.numeric(results$ground_truth)
+  scores <- results$posterior_p
+  
   if (metric_type == "roc") {
     # Calculate ROC curve
     roc_obj <- roc(true_labels, scores)
@@ -183,43 +186,29 @@ main <- function() {
     tf_target_fraction = 0.2  # only a fraction of a TF's targets will become diff. expr.
   )
 
-  cat("Creating OR-NOR model...\n")
-  # Create and run the OR-NOR model
-  inference.model <- ORNOR.inference(network, evidence, n.graphs = 5, verbosity = 2)
+  # Create and fit the OR-NOR model
+  cat("Creating and fitting OR-NOR model...\n")
+  model <- ornor(network, evidence, n_graphs = 5)
+  model <- fit(model, n_samples = 2000, gelman_rubin = 1.1, burnin = TRUE)
 
-  cat("\nSampling posterior distributions...\n")
-  # Sample the posterior distributions
-  inference.model <- sample.posterior(inference.model, N = 2000, gr.level = 1.1, burnin = TRUE)
-
-  cat("\nPost-processing results...\n")
   # Get inference results
-  inference.model <- postprocess.result(inference.model)
-  tf.inference <- inference.model$result.info$tf.inference
-  cat("Number of TFs in results:", nrow(tf.inference), "\n")
-
+  cat("\nProcessing results...\n")
+  results <- get_results(model)
+  
   # Add ground truth column
-  cat("Adding ground truth information...\n")
-  cat("Number of active TFs:", length(active_tfs), "\n")
-  print(str(tf.inference))  # Print structure of tf.inference
-  tf.inference$gt_act <- as.numeric(tf.inference$id %in% active_tfs)
+  results$ground_truth <- results$TF_id %in% active_tfs
+  
+  # Sort by posterior probability
+  results <- results[order(results$posterior_p, decreasing = TRUE), ]
+  rownames(results) <- seq_len(nrow(results))
 
   # Print top 10 TFs
   cat("\nTop 10 inferred active TFs:\n")
-  print(head(tf.inference[order(-tf.inference$posterior.p), ], 10))
+  print(head(results, 10))
 
   # Plot ROC and PR curves
-  cat("\nPlotting ROC curve...\n")
-  roc_auc <- plot_metric("roc", tf.inference$gt_act, tf.inference$posterior.p,
-              "Receiver Operating Characteristic (ROC) Curve")
-  cat("AUC:", round(roc_auc, 3), "\n")
-
-  cat("\nPlotting PR curve...\n")
-  pr_auc <- plot_metric("pr", tf.inference$gt_act, tf.inference$posterior.p,
-             "Precision-Recall Curve")
-  cat("AUC:", round(pr_auc, 3), "\n")
+  plot_metric("roc", results, "ROC Curve")
+  plot_metric("pr", results, "PR Curve")
 }
 
-# Run main function
-if (!interactive()) {
-  main()
-}
+if (!interactive()) main()
