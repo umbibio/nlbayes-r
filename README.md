@@ -63,17 +63,30 @@ Basic example of running TF inference:
 ```r
 library(nlbayes)
 
-# Load or generate your network and evidence
-network <- list()  # List mapping TFs to their target genes
-evidence <- c()    # Named numeric vector of differential expression evidence
+# Create model
+model <- ornor(
+    network = network_list,  # List mapping TF IDs to target genes with regulation modes
+    evidence = expression_data,  # Named vector of gene expression states
+    n_graphs = 3,  # Number of parallel graphs for convergence assessment
+    uniform_prior = FALSE,  # Whether to use uniform prior for theta parameter
+    active_tfs = c("TF1", "TF2")  # Optional: TFs known to be active
+)
 
-# Create and run the model
-inference.model <- ORNOR.inference(network, evidence, n.graphs = 5)
-inference.model <- sample.posterior(inference.model, N = 2000, gr.level = 1.1, burnin = TRUE)
+# Fit the model
+model <- fit(model,
+    n_samples = 2000,  # Number of MCMC samples
+    gelman_rubin = 1.1,  # Convergence criterion
+    burnin = TRUE  # Whether to perform burn-in phase
+)
 
-# Post-process results
-inference.model <- postprocess.result(inference.model)
-tf.inference <- inference.model$result.info$tf.inference
+# Get results
+results <- get_results(model)
+print(results)
 ```
+
+The input data should be formatted as follows:
+
+- `network_list`: A named list where names are TF IDs and values are named numeric vectors mapping target gene names to regulation modes (-1 for repression, 1 for activation)
+- `expression_data`: A named numeric vector of gene expression states (-1 for down-regulated, 1 for up-regulated)
 
 For more detailed examples, check the example scripts in the `examples` directory.
