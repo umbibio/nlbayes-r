@@ -6,8 +6,26 @@ Date: 2023-02-28
 Author: Argenis Arriojas
 Maintainer: Argenis Arriojas <ArriojasMaldonado001@umb.edu>
 Description: An implementation of an MCMC algorithm for inference in noisy Logic
-        graphical models.
+    graphical models. The package uses Bayesian networks to infer active
+    transcription factors from gene expression data.
 License: GPL (>= 2)
-Depends: Rcpp (>= 1.0.8), RcppProgress (>= 0.1)
-Imports: methods, Rcpp (>= 1.0.8), RcppProgress (>= 0.1)
-LinkingTo: Rcpp, RcppProgress
+URL: https://github.com/umbibio/nlbayes-r
+BugReports: https://github.com/umbibio/nlbayes-r/issues
+Depends:
+    R (>= 3.5.0)
+Imports:
+    methods,
+    Rcpp (>= 1.0.8),
+    RcppProgress (>= 0.1),
+    rjson,
+    pROC,
+    dplyr,
+    txtplot
+LinkingTo:
+    Rcpp,
+    RcppProgress
+Suggests:
+    devtools,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+SystemRequirements: GNU GSL
