@@ -15,11 +15,8 @@ OBJECTS = $(SOURCES:.cpp=.o)
 #    - PKG_LIBS:     link flags
 #----------------------------------------------------------------
 PKG_CPPFLAGS = -I../core/include
-PKG_CXXFLAGS = -fopenmp
-PKG_LIBS = -lgsl -lgslcblas -lm -lgomp
-
-# Use C++14
-CXX_STD = CXX14
+PKG_CXXFLAGS = -std=c++17
+PKG_LIBS = -lgsl -lgslcblas -lm
 
 #----------------------------------------------------------------
 # The default Make target that R calls is 'all'
