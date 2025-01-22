@@ -2,3 +2,22 @@
 .lintr
 *.o
 *.so
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rprofile
+
+# renv
+renv
+.Rprofile
+
+# Build artifacts
+src/*.o
+src/*.so
+src/*.dll
+*.tar.gz
+
+# Core library build
+core/build/

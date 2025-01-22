@@ -32,4 +32,4 @@ private:
     nlb::ModelORNOR* wrapped;
 };
 
-#endif
+#endif //RCPPMOD_MODELORNOR

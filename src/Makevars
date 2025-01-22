@@ -1,4 +1,43 @@
-CXX_STD = CXX11
-CXXFLAGS = -fopenmp
+#----------------------------------------------------------------
+# Collect all .cpp files and their corresponding .o files
+#----------------------------------------------------------------
+SRCDIR  = ../core/src
+CPPFILES_CORE = $(wildcard $(SRCDIR)/*.cpp)
+CPPFILES_LOCAL = $(wildcard ./*.cpp)
+
+SOURCES = $(CPPFILES_CORE) $(CPPFILES_LOCAL)
+OBJECTS = $(SOURCES:.cpp=.o)
+
+#----------------------------------------------------------------
+# Set compiler flags:
+#    - PKG_CPPFLAGS: where to find headers
+#    - PKG_CXXFLAGS: additional compiler flags
+#    - PKG_LIBS:     link flags
+#----------------------------------------------------------------
+PKG_CPPFLAGS = -I../core/include
 PKG_CXXFLAGS = -fopenmp
-PKG_LIBS = -fopenmp -lgsl -lm
+PKG_LIBS = -lgsl -lgslcblas -lm -lgomp
+
+# Use C++14
+CXX_STD = CXX14
+
+#----------------------------------------------------------------
+# The default Make target that R calls is 'all'
+#----------------------------------------------------------------
+all: $(SHLIB)
+
+#----------------------------------------------------------------
+# Link the shared object (.so / .dll) from our object files
+#----------------------------------------------------------------
+$(SHLIB): $(OBJECTS)
+	$(SHLIB_LINK) $(OBJECTS) $(LDFLAGS) $(PKG_LIBS) -o $@
+
+#----------------------------------------------------------------
+# Compile .o files from .cpp
+#----------------------------------------------------------------
+%.o: %.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(PKG_CPPFLAGS) $(ALL_CXXFLAGS) $(PKG_CXXFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS) $(SHLIB)

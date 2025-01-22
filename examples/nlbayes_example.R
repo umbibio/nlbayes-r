@@ -1,6 +1,8 @@
-library(rjson)
-library(org.Hs.eg.db)
-library(nlbayes)
+suppressWarnings({
+    library(rjson)
+    library(org.Hs.eg.db)
+    library(nlbayes)
+})
 
 # download files: 
 #   - This differential expression table was generated using the GEO2R tool, contrasting the E2F3 treated
@@ -12,10 +14,10 @@ library(nlbayes)
 #     url: https://umbibio.math.umb.edu/nlbayes/assets/data/networks/gtex_chip/homo_sapiens/tissue_specific/breast.rels.json
 
 # load the network. It must contain modes of regulation as integers: -1, 0, 1
-network <- fromJSON(file='breast.rels.json')
+network <- fromJSON(file='examples/data/breast.rels.json')
 
 # load a table with differential expression
-deg.table <- read.table('GSE3151.E2F3.top.table.tsv', sep = '\t', header = TRUE, quote = NULL)
+deg.table <- read.table('examples/data/GSE3151.E2F3.top.table.tsv', sep = '\t', header = TRUE, quote = NULL)
 
 # filter DE genes by setting cutoff values on p-value and/or fold-change
 top.deg.table <- deg.table[(abs(deg.table$logFC) >= 1.) & (deg.table$adj.P.Val <= 0.001), ]
@@ -49,4 +51,3 @@ write.table(tf.inference, 'inference_result.tsv', sep = '\t', row.names = FALSE)
 # optionally, we may sample the posterior distribution right away with the ORNOR.inference method
 # inference.model <- ORNOR.inference(network, evidence, n.graphs = 5, verbosity=2, do.sample = TRUE, N = 2000, gr.level = 1.15, burnin = TRUE)
 # inference.model <- postprocess.result(inference.model, annotation)
-
