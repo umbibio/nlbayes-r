@@ -49,11 +49,11 @@ pacman -S mingw-w64-x86_64-gsl
 
 Install nlbayes directly from GitHub:
 ```r
-# Install devtools if not already installed
-install.packages("devtools")
+# Install remotes if not already installed
+install.packages("remotes")
 
-# Install nlbayes (this will automatically install all required dependencies)
-devtools::install_github('umbibio/nlbayes-r')
+# Install nlbayes
+remotes::install_github("umbibio/nlbayes-r")
 ```
 
 ## Usage
